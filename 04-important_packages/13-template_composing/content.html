@@ -1,0 +1,26 @@
+{{ template "header.html" }}
+<body>
+  <h1>Cursos</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Carga Horária</th>
+        <th>Mais que 40 horas?</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{ range .}}
+      <tr>
+        <td>{{ .Nome }}</td>
+        <td>{{ .CargaHoraria }} horas</td>
+        {{ if gt .CargaHoraria 40 }}
+        <td>Sim</td>
+        {{ end }}
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  {{ template "footer.html" }}
