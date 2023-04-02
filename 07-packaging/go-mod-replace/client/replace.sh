@@ -1,0 +1,1 @@
+go mod edit -replace github.com/rafaelpapastamatiou/goexpert/07-packaging/go-mod-replace/math=../math
