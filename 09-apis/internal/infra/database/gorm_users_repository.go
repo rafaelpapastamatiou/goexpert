@@ -6,23 +6,23 @@ import (
 )
 
 type GormUsersRepository struct {
-	DB *gorm.DB
+	db *gorm.DB
 }
 
 func NewGormUsersRepository(db *gorm.DB) *GormUsersRepository {
 	return &GormUsersRepository{
-		DB: db,
+		db: db,
 	}
 }
 
 func (r *GormUsersRepository) Save(user *entity.User) error {
-	return r.DB.Create(user).Error
+	return r.db.Save(user).Error
 }
 
 func (r *GormUsersRepository) FindById(id string) (*entity.User, error) {
 	var user entity.User
 
-	err := r.DB.Where("id = ?", id).First(&user).Error
+	err := r.db.Where("id = ?", id).First(&user).Error
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func (r *GormUsersRepository) FindById(id string) (*entity.User, error) {
 func (r *GormUsersRepository) FindByEmail(email string) (*entity.User, error) {
 	var user entity.User
 
-	err := r.DB.Where("email = ?", email).First(&user).Error
+	err := r.db.Where("email = ?", email).First(&user).Error
 	if err != nil {
 		return nil, err
 	}
