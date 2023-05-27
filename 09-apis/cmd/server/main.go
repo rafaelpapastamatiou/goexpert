@@ -25,17 +25,21 @@ func main() {
 	db.AutoMigrate(&entity.Product{}, &entity.User{})
 
 	productsRepository := database.NewGormProductsRepository(db)
+	usersRepository := database.NewGormUsersRepository(db)
 
-	newProductHandler := handler.NewProductHandler(productsRepository)
+	productHandler := handler.NewProductHandler(productsRepository)
+	userHandler := handler.NewUserHandler(usersRepository)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	r.Get("/products", newProductHandler.GetProducts)
-	r.Get("/products/{id}", newProductHandler.GetProduct)
-	r.Post("/products", newProductHandler.CreateProduct)
-	r.Put("/products/{id}", newProductHandler.UpdateProduct)
-	r.Delete("/products/{id}", newProductHandler.DeleteProduct)
+	r.Get("/products", productHandler.GetProducts)
+	r.Get("/products/{id}", productHandler.GetProduct)
+	r.Post("/products", productHandler.CreateProduct)
+	r.Put("/products/{id}", productHandler.UpdateProduct)
+	r.Delete("/products/{id}", productHandler.DeleteProduct)
+
+	r.Post("/users", userHandler.CreateUser)
 
 	http.ListenAndServe(":8000", r)
 }
