@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/jwtauth"
 	"github.com/rafaelpapastamatiou/goexpert/09-apis/config"
 	"github.com/rafaelpapastamatiou/goexpert/09-apis/internal/domain/entity"
 	"github.com/rafaelpapastamatiou/goexpert/09-apis/internal/infra/database"
@@ -37,11 +38,16 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	r.Get("/products", productHandler.GetProducts)
-	r.Get("/products/{id}", productHandler.GetProduct)
-	r.Post("/products", productHandler.CreateProduct)
-	r.Put("/products/{id}", productHandler.UpdateProduct)
-	r.Delete("/products/{id}", productHandler.DeleteProduct)
+	r.Route("/products", func(r chi.Router) {
+		r.Use(jwtauth.Verifier(cfg.AuthToken))
+		r.Use(jwtauth.Authenticator)
+
+		r.Get("/", productHandler.GetProducts)
+		r.Get("/{id}", productHandler.GetProduct)
+		r.Post("/", productHandler.CreateProduct)
+		r.Put("/{id}", productHandler.UpdateProduct)
+		r.Delete("/{id}", productHandler.DeleteProduct)
+	})
 
 	r.Post("/users", userHandler.CreateUser)
 	r.Post("/users/auth", userHandler.AuthenticateUser)
