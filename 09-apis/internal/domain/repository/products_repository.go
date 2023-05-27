@@ -6,4 +6,5 @@ type ProductsRepository interface {
 	Save(product *entity.Product) error
 	FindAll(page, limit int, sort string) ([]*entity.Product, error)
 	FindById(id string) (*entity.Product, error)
+	Delete(id string) error
 }
