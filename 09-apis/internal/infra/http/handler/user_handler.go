@@ -13,22 +13,26 @@ import (
 
 type UserHandler struct {
 	usersRepository repository.UsersRepository
-	jwt             *jwtauth.JWTAuth
-	jwtExpiresIn    int
 }
 
 func NewUserHandler(
 	repository repository.UsersRepository,
-	jwt *jwtauth.JWTAuth,
-	jwtExpiresIn int,
 ) *UserHandler {
 	return &UserHandler{
 		repository,
-		jwt,
-		jwtExpiresIn,
 	}
 }
 
+// Create user godoc
+// @Summary Create User
+// @Description Create a new user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param request body dto.CreateUserRequestBodyDTO true "User"
+// @Success 201
+// @Failure 500
+// @Router /users [post]
 func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user dto.CreateUserRequestBodyDTO
 
@@ -53,7 +57,20 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+// AuthenticateUser godoc
+// @Summary Authenticate user
+// @Description Authenticate user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param request body dto.AuthenticateUserRequestBodyDTO true "Credentials"
+// @Success 200 {object} dto.AuthenticateUserResponseBodyDTO
+// @Failure 500
+// @Router /users/auth [post]
 func (h *UserHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request) {
+	jwt := r.Context().Value("jwt").(*jwtauth.JWTAuth)
+	jwtExpiresIn := r.Context().Value("jwtExpiresIn").(int)
+
 	var credentials dto.AuthenticateUserRequestBodyDTO
 
 	err := json.NewDecoder(r.Body).Decode(&credentials)
@@ -73,9 +90,9 @@ func (h *UserHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, tokenString, err := h.jwt.Encode(map[string]interface{}{
+	_, tokenString, err := jwt.Encode(map[string]interface{}{
 		"sub": user.ID.String(),
-		"exp": time.Now().Add(time.Second * time.Duration(h.jwtExpiresIn)).Unix(),
+		"exp": time.Now().Add(time.Second * time.Duration(jwtExpiresIn)).Unix(),
 	})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

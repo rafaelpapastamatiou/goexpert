@@ -1,0 +1,118 @@
+basePath: /
+definitions:
+  dto.AuthenticateUserRequestBodyDTO:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.AuthenticateUserResponseBodyDTO:
+    properties:
+      access_token:
+        type: string
+    type: object
+  dto.CreateProductRequestBodyDTO:
+    properties:
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  dto.CreateUserRequestBodyDTO:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact:
+    email: rafael@papastamatiou.com
+    name: Rafael Papastamatiou
+    url: http://papastamatiou.com
+  description: Products API with authentication
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Go Expert Example API
+  version: "1.0"
+paths:
+  /products:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new Product
+      parameters:
+      - description: Product info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateProductRequestBodyDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+      summary: Create Product
+      tags:
+      - products
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUserRequestBodyDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+      summary: Create User
+      tags:
+      - users
+  /users/auth:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user
+      parameters:
+      - description: Credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AuthenticateUserRequestBodyDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AuthenticateUserResponseBodyDTO'
+        "500":
+          description: Internal Server Error
+      summary: Authenticate user
+      tags:
+      - users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,5 +1,5 @@
 GET http://localhost:8000/products HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODUyMjM1MDIsInN1YiI6IjkwODc3Y2MzLWJhMDUtNDA0Zi04OTZhLWFlZTBiMTBmNWFhMiJ9.aJooDE_GdWa5Qs9GiVaWwCmlc6mt8BFQdTrvjhSVh_I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODU2NzQ2NzEsInN1YiI6Ijc5MDdhYjkyLTU3NTYtNDMyMi05MWI5LTQzZTY1NzUwZWJmMyJ9.XZEb9bIZnq8wrmTqAVlC6rrjKm5j5TkehFQ9o93-wFE
 
 ###
 GET http://localhost:8000/products/45add36d-0562-46c5-b31c-5435689b3a46 HTTP/1.1

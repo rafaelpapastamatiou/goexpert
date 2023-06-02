@@ -21,6 +21,16 @@ func NewProductHandler(repository repository.ProductsRepository) *ProductHandler
 	}
 }
 
+// Create product godoc
+// @Summary Create Product
+// @Description Creates a new Product
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param request body dto.CreateProductRequestBodyDTO true "Product info"
+// @Success 201
+// @Failure 500
+// @Router /products [post]
 func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 	var product dto.CreateProductRequestBodyDTO
 
