@@ -9,3 +9,8 @@ Example: export GOPRIVATE=github.com/rafaelpapastamatiou/goexpert-private-repo
 
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+
+
+## Create vendor directory to keep dependencies safe
+
+go mod vendor
