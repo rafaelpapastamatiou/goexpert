@@ -1,0 +1,11 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: goexpert-17-sqlc
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
