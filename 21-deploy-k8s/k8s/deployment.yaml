@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goexpert-21-deploy-k8s
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: goexpert-21-deploy-k8s
+  template:
+    metadata:
+      labels:
+        app: goexpert-21-deploy-k8s
+    spec:
+      containers:
+      - name: goexpert-21-deploy-k8s-server
+        image: rafaelpapastamatiou/goexpert-21-deploy-k8s:latest
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 8080
+
+        # Startup Probe - Checks if the application is starting up
+        startupProbe:
+          httpGet: # Perform an HTTP GET request to check if the application is starting up
+            path: /
+            port: 8080
+          initialDelaySeconds: 5 # Wait 30 seconds before starting the probe
+          periodSeconds: 10 # How often (in seconds) to perform the probe
+          failureThreshold: 5 # When the probe fails, Kubernetes will try again after this many failures
+
+        # Readiness Probe - Checks if the application is ready to accept traffic
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          periodSeconds: 10 # How often (in seconds) to perform the probe
+          failureThreshold: 3 # When the probe fails, Kubernetes will try again after this many failures
+          timeoutSeconds: 5 # How long to wait for a response before considering the probe failed
+
+        # Liveness Probe - Checks if the application is still alive
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          periodSeconds: 10 # How often (in seconds) to perform the probe
+          failureThreshold: 3 # When the probe fails, Kubernetes will try again after this many failures
+          timeoutSeconds: 5 # How long to wait for a response before considering the probe failed
