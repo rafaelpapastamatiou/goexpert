@@ -26,6 +26,33 @@ func (r *OrderRepository) Save(order *entity.Order) error {
 	return nil
 }
 
+func (r *OrderRepository) FindAll() ([]entity.Order, error) {
+	rows, err := r.Db.Query("SELECT id, price, tax, final_price FROM orders;")
+	if err != nil && err != sql.ErrNoRows {
+		return nil, err
+	}
+	if err == sql.ErrNoRows {
+		return make([]entity.Order, 0), nil
+	}
+
+	defer rows.Close()
+
+	var orders []entity.Order
+
+	for rows.Next() {
+		var order entity.Order
+
+		err := rows.Scan(&order.ID, &order.Price, &order.Tax, &order.FinalPrice)
+		if err != nil {
+			return nil, err
+		}
+
+		orders = append(orders, order)
+	}
+
+	return orders, nil
+}
+
 func (r *OrderRepository) GetTotal() (int, error) {
 	var total int
 	err := r.Db.QueryRow("Select count(*) from orders").Scan(&total)
