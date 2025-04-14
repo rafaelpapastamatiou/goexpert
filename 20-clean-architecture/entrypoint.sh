@@ -5,7 +5,7 @@ sleep 5
 
 # run the migrations
 echo "Running database migrations..."
-migrate -path=internal/infra/sql/migrations -database "mysql://root:root@tcp(localhost:3306)/orders" -verbose up
+migrate -path=internal/infra/sql/migrations -database "mysql://root:root@tcp(mysql:3306)/orders" -verbose up
 
 # install dependencies
 echo "Installing dependencies..."
