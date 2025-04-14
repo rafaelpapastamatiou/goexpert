@@ -1,0 +1,25 @@
+### List all books
+GET http://localhost:8080/books
+
+### Get a book by ID
+GET http://localhost:8080/books/1
+
+### Create a new book
+POST http://localhost:8080/books
+Content-Type: application/json
+
+### Update a book by ID
+PUT http://localhost:8080/books/1
+
+### Delete a book by ID
+DELETE http://localhost:8080/books/1
+
+### Getting book directory
+GET http://localhost:8080/books/dir/folder1/folder2/file1
+
+
+### Precendence - hitting specific path
+GET http://localhost:8080/precedence/xxx
+
+### Precedence - hitting generic path
+GET http://localhost:8080/precedence/yyy
